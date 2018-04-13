@@ -18,7 +18,7 @@ namespace AdvancedTextEditorCSharp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            axShockwaveFlash1.Movie = @"C:\1.swf";
+            axShockwaveFlash1.Movie = @"C:\11\1.swf";
             axShockwaveFlash1.Play();
         }
 
