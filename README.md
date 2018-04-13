@@ -1,2 +1,1 @@
 # RTF-Reader
-Text Editor
