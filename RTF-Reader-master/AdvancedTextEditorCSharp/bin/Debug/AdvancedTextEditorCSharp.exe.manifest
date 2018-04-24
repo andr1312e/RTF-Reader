@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AdvancedTextEditorCSharp.exe" size="5852096">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AdvancedTextEditorCSharp.exe" size="5039552">
       <assemblyIdentity name="AdvancedTextEditorCSharp" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>eWakpzAfkJ8OyMY39Qetx6HV/go=</dsig:DigestValue>
+        <dsig:DigestValue>pmRbm2bX37LOpuIxrO5mTqs2cW0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>wNdRjVZNVQmgaYnEFKDFbY72EVc=</dsig:DigestValue>
+        <dsig:DigestValue>wHer3VTwgJu57Xn62V+o1Jl231g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -73,7 +73,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>dbCt8JucRWI/helUDiJCQEVeFx0=</dsig:DigestValue>
+        <dsig:DigestValue>nOlXftyYT8xv939Xry7VjBrevfg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
