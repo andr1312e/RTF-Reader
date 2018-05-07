@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AdvancedTextEditorCSharp
@@ -16,6 +14,7 @@ namespace AdvancedTextEditorCSharp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new AdvancedTextEditor());
+            //Application.Run(new mytest.Form1("..//..//..//Строевой устав.txt"));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AdvancedTextEditorCSharp
 {
@@ -14,52 +15,66 @@ namespace AdvancedTextEditorCSharp
     public partial class AdvancedTextEditor : Form
     {
         private int TabCount = 0;
-        String forderpath = "C:\\11";
-        String[][] table;
+        String forderpath, forderpathdoc, forderpathpril;
+
 
         public AdvancedTextEditor()
         {
+            this.WindowState = FormWindowState.Maximized;
             InitializeComponent();
+            this.saveToolStripMenuItem.Visible = this.saveAsToolStripMenuItem.Visible = this.editToolStripMenuItem.Visible = this.toolStripContainer1.LeftToolStripPanel.Visible = this.toolStripContainer1.BottomToolStripPanel.Visible = false;
+            forderpath = System.IO.Directory.GetCurrentDirectory();
+                forderpath+="\\T";
             IEnumerable<string> files = System.IO.Directory.EnumerateFiles(forderpath);
             IEnumerable<string> forder = System.IO.Directory.EnumerateDirectories(forderpath);
+            for (int i = 0; i < files.Count(); i++)
+            {
+                    string name = files.ElementAt(i);
+                    name = name.Remove(name.Length - 4, 4);
+                    name = name.Remove(0, name.LastIndexOf('\\') + 1);
+                if(name[0]!='1' && name[0] != '2' && name[0] != '3' && name[0]!='4')
+                    оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripButton(name, null, Clicked));
+            }
+            files = System.IO.Directory.EnumerateFiles(forderpath);
+            for (int i = 0; i < forder.Count(); i++)
+            {
+                string name = forder.ElementAt(i);
+                name = name.Remove(0, name.LastIndexOf('\\') + 1);
+                оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+                string fordername = ": " + name;
+                оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripLabel("Глава " + fordername));
+                {
+                    for (int j = 0; j < files.Count(); j++)
+                    {
+                        name = files.ElementAt(j);
+                        name = name.Remove(name.Length - 4, 4);
+                        name = name.Remove(0, name.LastIndexOf('\\') + 1);
+                        if (name[0] == (i + 1 + '0') && (i + 1 + '0')==fordername[2])
+                            оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripButton(name, null, Clicked));
+                    }
+                }
+            }
+            forderpathdoc = System.IO.Directory.GetCurrentDirectory();
+            forderpathdoc += "\\D";
+            files = System.IO.Directory.EnumerateFiles(forderpathdoc);
             for (int i = 0; i < files.Count(); i++)
             {
                 string name = files.ElementAt(i);
                 name = name.Remove(name.Length - 4, 4);
                 name = name.Remove(0, name.LastIndexOf('\\') + 1);
-                оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripButton(name, null, Clicked));
+                руководящиеДокументыToolStripMenuItem.DropDownItems.Add(new ToolStripButton(name, null, ClickedDoc));
             }
-            if (forder.Count() > 0)
+
+
+            forderpathpril = System.IO.Directory.GetCurrentDirectory()+"\\P";
+            files = System.IO.Directory.EnumerateFiles(forderpathpril);
+            for (int i = 0; i < files.Count(); i++)
             {
-                table = new String[forder.Count()][];
-                for (int i = 0; i < forder.Count(); i++)
-                {
-
-                    string name = forder.ElementAt(i);
-                    name = name.Remove(0, name.LastIndexOf('\\') + 1);
-                    оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
-                    оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripLabel("Глава " + (i + 1) + ": " + name));
-                    {//files in forder
-                        files = System.IO.Directory.EnumerateFiles(forderpath + "\\" + name);
-                        table[i] = new String[files.Count()+1];
-                        table[i][0] = name;
-                        for (int j = 0; j < files.Count(); j++)
-                        {
-
-                            string namef = files.ElementAt(j);
-                            namef = namef.Remove(namef.Length - 4, 4);
-                            namef = namef.Remove(0, namef.LastIndexOf('\\') + 1);
-                            оглавлениеToolStripMenuItem.DropDownItems.Add(new ToolStripButton(namef, null, ClickedtoFileinForder));
-                            table[i][j+1] = namef;
-                        }
-                    }
-
-
-                }
+                string name = files.ElementAt(i);
+                name = name.Remove(name.Length - 4, 4);
+                name = name.Remove(0, name.LastIndexOf('\\') + 1);
+                приложениеToolStripMenuItem.DropDownItems.Add(new ToolStripButton(name, null, ClickedPril));
             }
-
-
-            //End of the code
         }
 
         private void Clicked(object sender, EventArgs m)
@@ -69,25 +84,21 @@ namespace AdvancedTextEditorCSharp
             String path = forderpath + "\\" + file_name + ".rtf";
             GetCurrentDocument.LoadFile(path, RichTextBoxStreamType.RichText);
         }
-
-        private void ClickedtoFileinForder(object sender, EventArgs m)
+        private void ClickedDoc(object sender, EventArgs m)
         {
-            String file_name, forder_name = "";
+            String file_name;
             file_name = sender.ToString();
-            for (int i = 0; i < table.Length; i++) {
-                for (int j = 1; j < table[i].Length; j++) {
-                    if (table[i][j] == file_name) {
-                            forder_name = table[i][0];
-                            i = table.Length;
-                            break;
-                        
-                    }
-                        
-                }
-            }
-            String path = forderpath + "\\" + forder_name + "\\" + file_name + ".rtf";
+            String path = forderpathdoc + "\\" + file_name + ".rtf";
             GetCurrentDocument.LoadFile(path, RichTextBoxStreamType.RichText);
         }
+        private void ClickedPril(object sender, EventArgs m)
+        {
+            String file_name;
+            file_name = sender.ToString();
+            String path = forderpathpril + "\\" + file_name + ".rtf";
+            GetCurrentDocument.LoadFile(path, RichTextBoxStreamType.RichText);
+        }
+
 
 
         #region Methods
@@ -106,7 +117,7 @@ namespace AdvancedTextEditorCSharp
             TabPage NewPage = new TabPage();
             TabCount += 1;
 
-            string DocumentText = "Document " + TabCount;
+            string DocumentText = "Окно " + TabCount;
             NewPage.Name = DocumentText;
             NewPage.Text = DocumentText;
             NewPage.Controls.Add(Body);
@@ -156,7 +167,8 @@ namespace AdvancedTextEditorCSharp
         private void Save()
         {
             saveFileDialog1.FileName = tabControl1.SelectedTab.Name;
-            saveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            saveFileDialog1.InitialDirectory = System.IO.Directory.GetCurrentDirectory();
+            //Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             saveFileDialog1.Filter = "RTF|.rtf";
             saveFileDialog1.Title = "Save";
 
@@ -578,25 +590,25 @@ namespace AdvancedTextEditorCSharp
 
         #endregion
 
-
-        #region ColntrolMode
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            this.saveAsToolStripMenuItem.Visible=this.saveToolStripMenuItem.Visible=this.openToolStripMenuItem.Visible=this.newToolStripMenuItem.Visible=this.editToolStripMenuItem.Visible=this.toolStripContainer1.LeftToolStripPanel.Visible = this.toolStripContainer1.BottomToolStripPanel.Visible = false;
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            this.saveAsToolStripMenuItem.Visible = this.saveToolStripMenuItem.Visible = this.openToolStripMenuItem.Visible = this.newToolStripMenuItem.Visible = this.editToolStripMenuItem.Visible = this.toolStripContainer1.LeftToolStripPanel.Visible = this.toolStripContainer1.BottomToolStripPanel.Visible =  true;
-        }
-        #endregion
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+
         }
 
         private void режимРедактToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.saveToolStripMenuItem.Visible = this.saveAsToolStripMenuItem.Visible = this.editToolStripMenuItem.Visible = this.toolStripContainer1.LeftToolStripPanel.Visible = this.toolStripContainer1.BottomToolStripPanel.Visible = false;
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            this.saveToolStripMenuItem.Visible = this.saveAsToolStripMenuItem.Visible = this.editToolStripMenuItem.Visible = this.toolStripContainer1.LeftToolStripPanel.Visible = this.toolStripContainer1.BottomToolStripPanel.Visible = true;
+        }
+
         private void пункт1ToolStripMenuItem_Click(object sender, EventArgs e)
         { }
 
@@ -604,11 +616,45 @@ namespace AdvancedTextEditorCSharp
         {
         }
 
+        private void дисциплинарныйУставToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mytest.Form1 form1 = new mytest.Form1("..//..//..//Дисциплинарный устав Вооруженных Сил РФ.txt");
+            form1.ShowDialog();
+        }
+
+        private void строевойУставToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mytest.Form1 form1 = new mytest.Form1("..//..//..//Строевой устав.txt");
+            form1.ShowDialog();
+        }
+
+        private void уставКараульнойСлужбыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mytest.Form1 form1 = new mytest.Form1("..//..//..//Устав гарнизонной и караульной службы ВС РФ.txt");
+            form1.ShowDialog();
+        }
+
+        private void уставВнутреннейСлужбыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mytest.Form1 form1 = new mytest.Form1("..//..//..//Устав внутренней службы Вооруженных Сил Российской Федерации.txt");
+            form1.ShowDialog();
+            
+        }
+
+        private void видеоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 form1 = new Form2();
+            form1.ShowDialog();
+        }
+
         private void тестToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form1 newForm = new Form1();
-            newForm.Show();
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
-
 }
